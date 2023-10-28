@@ -74,3 +74,5 @@ crashlytics-build.properties
 Test/Library/
 Test/Logs
 Test/Temp
+Test/obj
+Test/UserSettings
