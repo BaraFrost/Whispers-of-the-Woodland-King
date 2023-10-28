@@ -82,7 +82,9 @@ namespace Game {
                     _activePieces[i].gameObject.SetActive(false);
                     _pieces.Add(_activePieces[i]);
                     foreach(var piece in _activePieces[i].connectedPieces) {
-                        piece.Value.connectedPieces[LabirinthPiece.GetOppositeDirection(piece.Key)] = null;
+                        if(piece.Value != null) {
+                            piece.Value.connectedPieces[LabirinthPiece.GetOppositeDirection(piece.Key)] = null;
+                        }
                     }
                     _activePieces[i].connectedPieces = new Dictionary<LabirinthPiece.SideDirection, LabirinthPiece>();
                     _activePieces[i].onActivate -= ActivatePiece;
