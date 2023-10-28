@@ -41,8 +41,8 @@ namespace Game {
         }
 
         private LabirinthPiece SpawnPiece(Vector3 position, LabirinthPiece.SideDirection[] sides) {
-            var piecesToSpawn = _pieces.Where(piece => piece.Passages.Count == sides.Length && sides.Where(side => piece.Passages.Contains(side)).Count() == sides.Length).ToArray();
-            var piece = piecesToSpawn.FirstOrDefault();
+            var piecesToSpawn = _pieces.Where(piece => piece.Passages.Count >= sides.Length && sides.Where(side => piece.Passages.Contains(side)).Count() == sides.Length).ToArray();
+            var piece = piecesToSpawn.First();
             if (piecesToSpawn.Length > 1) {
                 var randomIndex = UnityEngine.Random.Range(0, piecesToSpawn.Length);
                 piece = piecesToSpawn[randomIndex];
@@ -81,6 +81,9 @@ namespace Game {
                 if (Vector3.Distance(_activePieces[i].gameObject.transform.position, activeLabirinthPiece.gameObject.transform.position) >= distanceToDisable) {
                     _activePieces[i].gameObject.SetActive(false);
                     _pieces.Add(_activePieces[i]);
+                    foreach(var piece in _activePieces[i].connectedPieces) {
+                        piece.Value.connectedPieces[LabirinthPiece.GetOppositeDirection(piece.Key)] = null;
+                    }
                     _activePieces[i].connectedPieces = new Dictionary<LabirinthPiece.SideDirection, LabirinthPiece>();
                     _activePieces[i].onActivate -= ActivatePiece;
                     _activePieces.RemoveAt(i);
