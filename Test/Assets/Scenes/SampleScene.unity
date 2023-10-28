@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _runSpeed: 4
+  _runSpeed: 6
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -337,8 +337,17 @@ MonoBehaviour:
   - {fileID: 1555089520694784042, guid: 662cce197720d20478a2de2b08bca85a, type: 3}
   - {fileID: 1555089520694784042, guid: e4be2f6568a6eb34faea6db40bbe1ec2, type: 3}
   - {fileID: 1555089520694784042, guid: 9b318b8e77907fb4b8e8c0e5d6b75891, type: 3}
+  - {fileID: 1555089520694784042, guid: bf0c9eba86e3ef1428d36c47e531391a, type: 3}
+  - {fileID: 1555089520694784042, guid: be8134b3f06374542aa730fbfbaafaaf, type: 3}
+  - {fileID: 1555089520694784042, guid: 9b9a2e70dde02c64aa5e0baf0bc05fb2, type: 3}
+  - {fileID: 1555089520694784042, guid: 719fe5a051a8d184fbe277f7ecef6c7a, type: 3}
+  - {fileID: 1555089520694784042, guid: bcb8bd51de7185c4dbcac325f0d2d846, type: 3}
+  - {fileID: 1555089520694784042, guid: 2827f1e849c58284689de9e29183bdc7, type: 3}
+  - {fileID: 1555089520694784042, guid: a166d722432a0164f923e4048b75644d, type: 3}
+  - {fileID: 1555089520694784042, guid: 9910abef58bfbfd4495b27b564760d4f, type: 3}
+  - {fileID: 1555089520694784042, guid: dd047406d76fc3d48adabbedf6d5eea8, type: 3}
   _duplicatesCount: 10
-  distanceToDisable: 40
+  distanceToDisable: 35
 --- !u!4 &866210665
 Transform:
   m_ObjectHideFlags: 0
