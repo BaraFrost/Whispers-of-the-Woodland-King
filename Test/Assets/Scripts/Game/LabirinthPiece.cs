@@ -16,23 +16,18 @@ namespace Game {
 
         [SerializeField]
         private List<SideDirection> _passages;
-        private SideDirection _passagesDirection;
-        public SideDirection PassagesDirection => _passagesDirection;
-       /* private HashSet<SideDirection> _passagesCache;
-        public HashSet<SideDirection> Passages => _passagesCache;*/
+        private HashSet<SideDirection> _passagesCache;
+        public HashSet<SideDirection> Passages => _passagesCache;
 
-        public Dictionary<SideDirection, LabirinthPiece> _connectedPieces = new Dictionary<SideDirection, LabirinthPiece>();
+        public Dictionary<SideDirection, LabirinthPiece> connectedPieces = new Dictionary<SideDirection, LabirinthPiece>();
 
         public Action<LabirinthPiece> onActivate;
 
         private void Awake() {
-            //_passagesCache = _passages.ToHashSet();
-            foreach (var passage in _passages) {
-                _passagesDirection |= passage;
-            }
+            _passagesCache = _passages.ToHashSet();
         }
 
-        private Vector3 SideDirectionToVector(SideDirection sideDirection) {
+        public static Vector3 SideDirectionToVector(SideDirection sideDirection) {
             switch (sideDirection) {
                 case SideDirection.Left:
                     return Vector3.left;
@@ -46,8 +41,22 @@ namespace Game {
             return Vector3.zero;
         }
 
-        private Vector3 GetSidePosition() {
-            return Vector3.zero;
+        public static SideDirection GetOppositeDirection(SideDirection sideDirection) {
+            switch (sideDirection) {
+                case SideDirection.Left:
+                    return SideDirection.Right;
+                case SideDirection.Right:
+                    return SideDirection.Left;
+                case SideDirection.Forward:
+                    return SideDirection.Back;
+                case SideDirection.Back:
+                default:
+                    return SideDirection.Forward;
+            }
+        }
+
+        public Vector3 GetSidePosition(SideDirection sideDirection) {
+            return SideDirectionToVector(sideDirection) * gameObject.transform.lossyScale.x + gameObject.transform.position;
         }
 
         private void OnCollisionEnter(Collision collision) {

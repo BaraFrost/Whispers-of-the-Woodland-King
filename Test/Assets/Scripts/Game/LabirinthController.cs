@@ -1,16 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Game.LabirinthPiece;
 
 namespace Game {
 
-    public class LabyrinthController : MonoBehaviour {
+    public class LabirinthController : MonoBehaviour {
 
         [SerializeField]
         private List<LabirinthPiece> _piecesPrefabs;
         [SerializeField]
         private int _duplicatesCount;
+
+        [SerializeField]
+        private float distanceToDisable;
 
         private List<LabirinthPiece> _pieces;
         private List<LabirinthPiece> _activePieces;
@@ -19,11 +22,16 @@ namespace Game {
             _pieces = new List<LabirinthPiece>();
             _activePieces = new List<LabirinthPiece>();
             InstantiatePieces();
-            SpawnPiece(Vector3.zero, SideDirection.Back | SideDirection.Right | SideDirection.Left | SideDirection.Forward);
+            SpawnPiece(Vector3.zero, new LabirinthPiece.SideDirection[] {
+                LabirinthPiece.SideDirection.Left,
+                LabirinthPiece.SideDirection.Right,
+                LabirinthPiece.SideDirection.Forward,
+                LabirinthPiece.SideDirection.Back
+            });
         }
 
         private void InstantiatePieces() {
-            foreach (var prefab in _activePieces) {
+            foreach (var prefab in _piecesPrefabs) {
                 for (int i = 0; i <= _duplicatesCount; i++) {
                     var instance = Instantiate(prefab);
                     instance.gameObject.SetActive(false);
@@ -32,14 +40,15 @@ namespace Game {
             }
         }
 
-        private LabirinthPiece SpawnPiece(Vector3 position, SideDirection side) {
-            var piecesToSpawn = _pieces.Where(piece => piece.PassagesDirection == side).ToArray();
+        private LabirinthPiece SpawnPiece(Vector3 position, LabirinthPiece.SideDirection[] sides) {
+            var piecesToSpawn = _pieces.Where(piece => sides.Where(side => piece.Passages.Contains(side)).Count() > 0).ToArray();
             var piece = piecesToSpawn.FirstOrDefault();
-            if(_pieces.Count > 1) {
-                piece = piecesToSpawn[Random.Range(0, piecesToSpawn.Length)];
+            if (piecesToSpawn.Length > 1) {
+                var randomIndex = UnityEngine.Random.Range(0, piecesToSpawn.Length);
+                piece = piecesToSpawn[randomIndex];
             }
-            piece.gameObject.SetActive(true);
             piece.transform.position = position;
+            piece.gameObject.SetActive(true);
             _activePieces.Add(piece);
             _pieces.Remove(piece);
             piece.onActivate = ActivatePiece;
@@ -47,7 +56,35 @@ namespace Game {
         }
 
         private void ActivatePiece(LabirinthPiece labirinthPiece) {
+            foreach (LabirinthPiece.SideDirection side in Enum.GetValues(typeof(LabirinthPiece.SideDirection))) {
+                if (labirinthPiece.connectedPieces.Count > 0 && labirinthPiece.connectedPieces.ContainsKey(side) && labirinthPiece.connectedPieces[side] != null) {
+                    continue;
+                }
+                if (labirinthPiece.Passages.Contains(side)) {
+                    var oppoziteSide = LabirinthPiece.GetOppositeDirection(side);
+                    var piece = SpawnPiece(labirinthPiece.GetSidePosition(side), new LabirinthPiece.SideDirection[] {
+                       oppoziteSide
+                    });
+                    if (piece == null) {
+                        continue;
+                    }
+                    labirinthPiece.connectedPieces[side] = piece;
+                    piece.connectedPieces[oppoziteSide] = labirinthPiece;
+                }
+            }
+            DisablePieces(labirinthPiece);
+        }
 
+        private void DisablePieces(LabirinthPiece activeLabirinthPiece) {
+            for (int i = _activePieces.Count - 1; i >= 0; i--) {
+                if (Vector3.Distance(_activePieces[i].gameObject.transform.position, activeLabirinthPiece.gameObject.transform.position) >= distanceToDisable) {
+                    _activePieces[i].gameObject.SetActive(false);
+                    _pieces.Add(_activePieces[i]);
+                    _activePieces[i].connectedPieces = new Dictionary<LabirinthPiece.SideDirection, LabirinthPiece>();
+                    _activePieces[i].onActivate -= ActivatePiece;
+                    _activePieces.RemoveAt(i);
+                }
+            }
         }
     }
 }
