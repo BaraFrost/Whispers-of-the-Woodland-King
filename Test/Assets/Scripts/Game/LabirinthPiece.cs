@@ -23,8 +23,13 @@ namespace Game {
 
         public Action<LabirinthPiece> onActivate;
 
+        private PlayerMoveController _player;
+
+        private LabirinthPieceHideController _hideController;
+
         private void Awake() {
             _passagesCache = _passages.ToHashSet();
+            _hideController = GetComponent<LabirinthPieceHideController>();
         }
 
         public static Vector3 SideDirectionToVector(SideDirection sideDirection) {
@@ -60,9 +65,17 @@ namespace Game {
         }
 
         private void OnCollisionEnter(Collision collision) {
-            if(collision.gameObject.TryGetComponent<PlayerMoveController>(out var player)) {
+            if (collision.gameObject.TryGetComponent<PlayerMoveController>(out var player)) {
                 onActivate?.Invoke(this);
+                _player = player;
             }
+        }
+
+        public bool TryToStartHideEvent() {
+            if(_player == null) {
+                return false;
+            }
+            return _hideController.TryToSpawnEnemy(_player);
         }
     }
 }
