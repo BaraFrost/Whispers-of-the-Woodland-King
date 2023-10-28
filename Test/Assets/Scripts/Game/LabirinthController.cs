@@ -41,7 +41,7 @@ namespace Game {
         }
 
         private LabirinthPiece SpawnPiece(Vector3 position, LabirinthPiece.SideDirection[] sides) {
-            var piecesToSpawn = _pieces.Where(piece => sides.Where(side => piece.Passages.Contains(side)).Count() > 0).ToArray();
+            var piecesToSpawn = _pieces.Where(piece => piece.Passages.Count == sides.Length && sides.Where(side => piece.Passages.Contains(side)).Count() == sides.Length).ToArray();
             var piece = piecesToSpawn.FirstOrDefault();
             if (piecesToSpawn.Length > 1) {
                 var randomIndex = UnityEngine.Random.Range(0, piecesToSpawn.Length);
@@ -57,7 +57,8 @@ namespace Game {
 
         private void ActivatePiece(LabirinthPiece labirinthPiece) {
             foreach (LabirinthPiece.SideDirection side in Enum.GetValues(typeof(LabirinthPiece.SideDirection))) {
-                if (labirinthPiece.connectedPieces.Count > 0 && labirinthPiece.connectedPieces.ContainsKey(side) && labirinthPiece.connectedPieces[side] != null) {
+                if (labirinthPiece.connectedPieces.Count > 0 && labirinthPiece.connectedPieces.ContainsKey(side)
+                    && labirinthPiece.connectedPieces[side] != null && labirinthPiece.connectedPieces[side].gameObject.activeSelf) {
                     continue;
                 }
                 if (labirinthPiece.Passages.Contains(side)) {
