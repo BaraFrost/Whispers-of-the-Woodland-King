@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -41,22 +42,18 @@ namespace Game {
         }
 
         private void Update() {
-            Move();
-        }
-
-        private void LateUpdate() {
+            HandleMoveVector();
         }
 
         public void Rotate() {
             if (!Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hitInfo, 100f, _groundLayerMask.value)) {
                 return;
             }
-            //_mouseWorldPosition = new Vector3(hitInfo.point.x, gameObject.transform.position.y, hitInfo.point.z);
             _mouseWorldPosition = Vector3.Lerp(_mouseWorldPosition, new Vector3(hitInfo.point.x, gameObject.transform.position.y, hitInfo.point.z), Time.deltaTime * _rotationSmooth);
             gameObject.transform.LookAt(_mouseWorldPosition, Vector3.up);
         }
 
-        private void Move() {
+        private void HandleMoveVector() {
             var moveVectorX = Input.GetAxis("Horizontal");
             var moveVectorZ = Input.GetAxis("Vertical");
             _moveDirection = new Vector3(moveVectorX, 0, moveVectorZ) * Speed;
@@ -64,6 +61,7 @@ namespace Game {
 
         private void FixedUpdate() {
             _rigidbody.velocity = _moveDirection;
+            Rotate();
         }
     }
 }
