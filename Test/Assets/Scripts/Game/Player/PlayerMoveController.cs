@@ -1,8 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Game {
 
