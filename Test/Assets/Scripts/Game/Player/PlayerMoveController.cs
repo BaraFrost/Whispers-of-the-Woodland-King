@@ -25,7 +25,19 @@ namespace Game {
         [SerializeField]
         private Animator _playerAnimator;
 
-        private bool _isDead;
+        [SerializeField]
+        private AudioSource _stepAudioSource;
+
+        [SerializeField]
+        private AudioSource _dyingAudio;
+
+        [SerializeField]
+        private float _defaultPitch;
+
+        [SerializeField]
+        private float _runPitch;
+
+        public static bool isDead;
 
         private Vector3 _mouseWorldPosition = new Vector3();
 
@@ -49,7 +61,7 @@ namespace Game {
         }
 
         private void Update() {
-            if (_isDead) {
+            if (isDead) {
                 return;
             }
             if (Input.GetMouseButtonDown(0)) {
@@ -77,30 +89,50 @@ namespace Game {
         }
 
         private void FixedUpdate() {
-            if (_isDead) {
+            if (isDead) {
                 return;
             }
             _rigidbody.velocity = _moveDirection;
+            ExecuteEffects();
+            Rotate();
+        }
+
+        private void ExecuteEffects() {
             if (_moveDirection != Vector3.zero) {
+                if (!_stepAudioSource.isPlaying) {
+                    _stepAudioSource.Play();
+                }
                 if (Input.GetKey(KeyCode.LeftShift)) {
                     _playerAnimator.ResetTrigger("Stay");
                     _playerAnimator.ResetTrigger("Go");
                     _playerAnimator.SetTrigger("Run");
+                    _stepAudioSource.pitch = _runPitch;
                 } else {
                     _playerAnimator.ResetTrigger("Stay");
                     _playerAnimator.ResetTrigger("Run");
                     _playerAnimator.SetTrigger("Go");
+                    _stepAudioSource.pitch = _defaultPitch;
                 }
             } else {
+                if (_stepAudioSource.isPlaying) {
+                    _stepAudioSource.Stop();
+                }
                 _playerAnimator.ResetTrigger("Go");
                 _playerAnimator.ResetTrigger("Run");
                 _playerAnimator.SetTrigger("Stay");
             }
-            Rotate();
         }
 
         public void SetDamage() {
-            _isDead = true;
+            if(isDead) {
+                return;
+            }
+            isDead = true;
+            _stepAudioSource.Stop();
+            _dyingAudio.Play();
+            _playerAnimator.ResetTrigger("Go");
+            _playerAnimator.ResetTrigger("Run");
+            _playerAnimator.ResetTrigger("Stay");
             _playerAnimator.SetTrigger("Die");
         }
     }

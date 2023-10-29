@@ -18,6 +18,8 @@ namespace Game {
         private List<LabirinthPiece> _pieces;
         private List<LabirinthPiece> _activePieces;
 
+        private LabirinthPiece _currentPiece;
+
         private void Awake() {
             _pieces = new List<LabirinthPiece>();
             _activePieces = new List<LabirinthPiece>();
@@ -56,6 +58,7 @@ namespace Game {
         }
 
         private void ActivatePiece(LabirinthPiece labirinthPiece) {
+            _currentPiece = labirinthPiece;
             foreach (LabirinthPiece.SideDirection side in Enum.GetValues(typeof(LabirinthPiece.SideDirection))) {
                 if (labirinthPiece.connectedPieces.Count > 0 && labirinthPiece.connectedPieces.ContainsKey(side)
                     && labirinthPiece.connectedPieces[side] != null && labirinthPiece.connectedPieces[side].gameObject.activeSelf) {
@@ -73,10 +76,23 @@ namespace Game {
                     piece.connectedPieces[oppoziteSide] = labirinthPiece;
                 }
             }
-            if (UnityEngine.Random.Range(0, 4) != 0) {
-                labirinthPiece.TryToStartHideEvent();
+            if (UnityEngine.Random.Range(0, 10) != 0 && !PlayerMoveController.isDead && !DogController.isActive) {
+                if(!HideItem.hideItemActive) {
+                    var isHideStart = labirinthPiece.TryToStartHideEvent();
+                    Debug.Log($"hide event result: {isHideStart}");
+                    if (isHideStart) {
+                        StartCoroutine(DelaydDogSpawn());
+                    }
+                }
             }
             DisablePieces(labirinthPiece);
+        }
+
+        private System.Collections.IEnumerator DelaydDogSpawn() {
+            yield return new WaitForSeconds(20);
+            if(!DogController.isActive) {
+                _currentPiece.TryToStartDogEvent();
+            }
         }
 
         private void DisablePieces(LabirinthPiece activeLabirinthPiece) {

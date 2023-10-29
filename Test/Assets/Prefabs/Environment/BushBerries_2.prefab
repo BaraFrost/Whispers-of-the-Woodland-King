@@ -215,7 +215,7 @@ MonoBehaviour:
     rotation: {x: 58.87255, y: 153.29572, z: 328.03754}
     scale: {x: -0.0040953425, y: -0.0040953425, z: -0.0040953425}
   - signPrefab: {fileID: 5127677736683641535, guid: 94eed1ad0c8b41649b25a60b700ff077, type: 3}
-    position: {x: 0.00055, y: 0.00132, z: 0.00998}
-    rotation: {x: 88.60003, y: 0, z: 3.3199978}
+    position: {x: -0.00004, y: 0.00359, z: 0.00909}
+    rotation: {x: 71.776054, y: 356.92722, z: 0.2592331}
     scale: {x: 0.004674052, y: 0.004674052, z: 0.004674052}
   _hideSettings: {fileID: 11400000, guid: a5cbdfe3d16aedd4183809ae8f967660, type: 2}

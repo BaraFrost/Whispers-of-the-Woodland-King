@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Game {
 
@@ -13,6 +12,8 @@ namespace Game {
             public Vector3 rotation;
             public Vector3 scale;
         }
+
+        public static bool hideItemActive;
 
         [SerializeField]
         private Sign[] _signs;
@@ -43,6 +44,7 @@ namespace Game {
             _signInstance.transform.localScale = sign.scale;
             _player = player;
             _isActive = true;
+            hideItemActive = true;
         }
 
         private void Update() {
@@ -82,6 +84,7 @@ namespace Game {
                 _audioSource.Stop();
             }
             _isActive = false;
+            hideItemActive = false;
         }
 
         private void OnDisable() {

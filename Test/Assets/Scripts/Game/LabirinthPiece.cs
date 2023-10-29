@@ -66,8 +66,8 @@ namespace Game {
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.gameObject.TryGetComponent<PlayerMoveController>(out var player)) {
-                onActivate?.Invoke(this);
                 _player = player;
+                onActivate?.Invoke(this);
             }
         }
 
@@ -76,6 +76,13 @@ namespace Game {
                 return false;
             }
             return _hideController.TryToSpawnEnemy(_player);
+        }
+
+        public bool TryToStartDogEvent() {
+            if (_player == null) {
+                return false;
+            }
+            return _hideController.TryToSpawnDog(_player);
         }
     }
 }
