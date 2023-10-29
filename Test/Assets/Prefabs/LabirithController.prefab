@@ -63,3 +63,4 @@ MonoBehaviour:
   - {fileID: 1555089520694784042, guid: 49e62e2a2c847b44eae6f5a72bcb3088, type: 3}
   _duplicatesCount: 0
   distanceToDisable: 35
+  _timeBeforStartEvent: 10
