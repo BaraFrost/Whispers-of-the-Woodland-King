@@ -66,6 +66,15 @@ namespace Game {
         [SerializeField]
         private TextMeshProUGUI _text;
 
+        [SerializeField]
+        private ParticleSystem _shootParticleSystem;
+
+        [SerializeField]
+        private AudioSource _reloadAudio;
+
+        [SerializeField]
+        private AudioSource _shootAudio;
+
         private float _currentReloadTime;
 
         private float _currentStamina;
@@ -116,7 +125,8 @@ namespace Game {
             _ammoImage.fillAmount = _currentReloadTime / _reloadTime;
             if (_currentReloadTime < _reloadTime) {
                 _currentReloadTime += Time.deltaTime;
-                if (_currentReloadTime > _reloadTime) {
+                if (_currentReloadTime >= _reloadTime) {
+                    _reloadAudio.Play();
                     _currentReloadTime = _reloadTime;
                 }
             }
@@ -150,6 +160,8 @@ namespace Game {
             }
             _ammoCount--;
             Instantiate(_bullet, _shootPoint.transform.position, Quaternion.LookRotation(_shootPoint.transform.forward, Vector3.up));
+            _shootParticleSystem.Play();
+            _shootAudio.Play();
             _currentReloadTime = 0;
         }
 
