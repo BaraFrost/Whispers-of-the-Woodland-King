@@ -73,6 +73,9 @@ namespace Game {
                     piece.connectedPieces[oppoziteSide] = labirinthPiece;
                 }
             }
+            if (UnityEngine.Random.Range(0, 4) != 0) {
+                labirinthPiece.TryToStartHideEvent();
+            }
             DisablePieces(labirinthPiece);
         }
 
@@ -81,8 +84,8 @@ namespace Game {
                 if (Vector3.Distance(_activePieces[i].gameObject.transform.position, activeLabirinthPiece.gameObject.transform.position) >= distanceToDisable) {
                     _activePieces[i].gameObject.SetActive(false);
                     _pieces.Add(_activePieces[i]);
-                    foreach(var piece in _activePieces[i].connectedPieces) {
-                        if(piece.Value != null) {
+                    foreach (var piece in _activePieces[i].connectedPieces) {
+                        if (piece.Value != null) {
                             piece.Value.connectedPieces[LabirinthPiece.GetOppositeDirection(piece.Key)] = null;
                         }
                     }

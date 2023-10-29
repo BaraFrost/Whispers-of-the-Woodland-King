@@ -15,3 +15,4 @@ MonoBehaviour:
   hideDistance: 10
   timeBeforeAttack: 5
   _heartAudio: {fileID: 8300000, guid: b243ff4ff1bf01642bee4f23bc59f8a3, type: 3}
+  leshiy: {fileID: 807669593, guid: 89905a87648fa6e44be5390bc069f7b9, type: 3}

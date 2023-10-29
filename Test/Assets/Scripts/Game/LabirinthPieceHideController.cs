@@ -7,6 +7,10 @@ namespace Game {
         [SerializeField]
         private HideItem[] _hideItems;
 
+        private void Awake() {
+            _hideItems = GetComponentsInChildren<HideItem>();
+        }
+
         public bool TryToSpawnEnemy(PlayerMoveController playerMoveController) {
             if(_hideItems == null || _hideItems.Length == 0) {
                 return false;

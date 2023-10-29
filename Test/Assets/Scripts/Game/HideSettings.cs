@@ -9,6 +9,8 @@ namespace Game {
         public float timeBeforeAttack;
 
         public AudioClip _heartAudio;
+
+        public LeshiyController leshiy;
     }
 }
 

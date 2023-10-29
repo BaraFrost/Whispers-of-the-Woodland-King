@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Game {
 
@@ -28,7 +29,7 @@ namespace Game {
 
         private AudioSource _audioSource;
 
-        private void Start() {
+        private void Awake() {
             _audioSource = GetComponent<AudioSource>();
             Activate(FindObjectOfType<PlayerMoveController>());
         }
@@ -36,7 +37,7 @@ namespace Game {
         public void Activate(PlayerMoveController player) {
             var randomIndex = Random.Range(0, _signs.Length);
             var sign = _signs[randomIndex];
-            _signInstance = Instantiate(sign.signPrefab, sign.position, Quaternion.identity/*.Euler(sign.rotation)*/, gameObject.transform);
+            _signInstance = Instantiate(sign.signPrefab, sign.position, Quaternion.identity, gameObject.transform);
             _signInstance.transform.localPosition = sign.position;
             _signInstance.transform.localRotation = Quaternion.Euler(sign.rotation);
             _signInstance.transform.localScale = sign.scale;
@@ -48,7 +49,7 @@ namespace Game {
             if (!_isActive) {
                 return;
             }
-            if (_attackCoroutine == null && Vector3.Distance(_player.gameObject.transform.position, gameObject.transform.position) <= _hideSettings.hideDistance) {
+            if (_attackCoroutine == null && IsPlayerInActivationRadius()) {
                 _attackCoroutine = AttackCoroutine();
                 StartCoroutine(_attackCoroutine);
             }
@@ -59,14 +60,27 @@ namespace Game {
             _audioSource.maxDistance = _hideSettings.hideDistance;
             _audioSource.Play();
             yield return new WaitForSeconds(_hideSettings.timeBeforeAttack);
+            if (IsPlayerInActivationRadius()) {
+                var leshiy = Instantiate(_hideSettings.leshiy, gameObject.transform.position, Quaternion.identity);
+                leshiy.Init(_player);
+            }
+            Deactivate();
+        }
+
+        private bool IsPlayerInActivationRadius() {
+            return Vector3.Distance(_player.gameObject.transform.position, gameObject.transform.position) <= _hideSettings.hideDistance;
         }
 
         public void Deactivate() {
-            Destroy(_signInstance);
-            if(_attackCoroutine != null) {
+            if(_signInstance != null) {
+                Destroy(_signInstance);
+            }
+            if (_attackCoroutine != null) {
                 StopCoroutine(_attackCoroutine);
             }
-            _audioSource.Stop();
+            if(_audioSource != null) {
+                _audioSource.Stop();
+            }
             _isActive = false;
         }
 

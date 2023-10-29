@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Game {
@@ -16,7 +17,15 @@ namespace Game {
         [SerializeField]
         private float _rotationSmooth;
 
-        private Vector3 _mouseWorldPosition = Vector3.forward;
+        [SerializeField]
+        private Bullet _bullet;
+
+        [SerializeField]
+        private Transform _shootPoint;
+
+        private bool _isDead;
+
+        private Vector3 _mouseWorldPosition = new Vector3();
 
         private Vector3 _moveDirection;
 
@@ -38,7 +47,17 @@ namespace Game {
         }
 
         private void Update() {
+            if (_isDead) {
+                return;
+            }
+            if (Input.GetMouseButtonDown(0)) {
+                Shoot();
+            }
             HandleMoveVector();
+        }
+
+        private void Shoot() {
+            Instantiate(_bullet, _shootPoint.transform.position, Quaternion.LookRotation(_shootPoint.transform.forward, Vector3.up));
         }
 
         public void Rotate() {
@@ -56,8 +75,15 @@ namespace Game {
         }
 
         private void FixedUpdate() {
+            if (_isDead) {
+                return;
+            }
             _rigidbody.velocity = _moveDirection;
             Rotate();
+        }
+
+        public void SetDamage() {
+            _isDead = true;
         }
     }
 }

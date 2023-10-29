@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _piecesPrefabs:
-  - {fileID: 1555089520694784042, guid: 662cce197720d20478a2de2b08bca85a, type: 3}
   - {fileID: 1555089520694784042, guid: e4be2f6568a6eb34faea6db40bbe1ec2, type: 3}
+  - {fileID: 1555089520694784042, guid: 662cce197720d20478a2de2b08bca85a, type: 3}
   - {fileID: 1555089520694784042, guid: 9b318b8e77907fb4b8e8c0e5d6b75891, type: 3}
   - {fileID: 1555089520694784042, guid: bf0c9eba86e3ef1428d36c47e531391a, type: 3}
   - {fileID: 1555089520694784042, guid: be8134b3f06374542aa730fbfbaafaaf, type: 3}
@@ -57,5 +57,9 @@ MonoBehaviour:
   - {fileID: 1555089520694784042, guid: a166d722432a0164f923e4048b75644d, type: 3}
   - {fileID: 1555089520694784042, guid: 9910abef58bfbfd4495b27b564760d4f, type: 3}
   - {fileID: 1555089520694784042, guid: dd047406d76fc3d48adabbedf6d5eea8, type: 3}
+  - {fileID: 1555089520694784042, guid: dd047406d76fc3d48adabbedf6d5eea8, type: 3}
+  - {fileID: 1555089520694784042, guid: 91660890f0434b54c8abc5ebb9727ffc, type: 3}
+  - {fileID: 1555089520694784042, guid: ecc6c3d1f18239d4c8fdce9b3ee5023a, type: 3}
+  - {fileID: 1555089520694784042, guid: 49e62e2a2c847b44eae6f5a72bcb3088, type: 3}
   _duplicatesCount: 0
   distanceToDisable: 35

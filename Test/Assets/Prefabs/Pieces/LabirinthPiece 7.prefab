@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1555089520694784055}
   - component: {fileID: 1555089520694784054}
   - component: {fileID: 1555089520694784042}
+  - component: {fileID: 5654677499158397639}
   m_Layer: 7
   m_Name: LabirinthPiece 7
   m_TagString: Untagged
@@ -275,6 +276,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _passages: 010000000200000003000000
+--- !u!114 &5654677499158397639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555089520694784053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9413b3802d315443b2e2bd844d4f87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hideItems: []
 --- !u!1001 &13491998701887812
 PrefabInstance:
   m_ObjectHideFlags: 0
