@@ -20,6 +20,11 @@ namespace Game {
 
         private LabirinthPiece _currentPiece;
 
+        private bool _canStartHideEvent;
+
+        [SerializeField]
+        private float _timeBeforStartEvent;
+
         private void Awake() {
             _pieces = new List<LabirinthPiece>();
             _activePieces = new List<LabirinthPiece>();
@@ -30,6 +35,13 @@ namespace Game {
                 LabirinthPiece.SideDirection.Forward,
                 LabirinthPiece.SideDirection.Back
             });
+            StartCoroutine(DelayedStartHideEvent());
+        }
+
+        private System.Collections.IEnumerator DelayedStartHideEvent() {
+            _canStartHideEvent = false;
+            yield return new WaitForSeconds(_timeBeforStartEvent);
+            _canStartHideEvent = true;
         }
 
         private void InstantiatePieces() {
@@ -76,7 +88,7 @@ namespace Game {
                     piece.connectedPieces[oppoziteSide] = labirinthPiece;
                 }
             }
-            if (UnityEngine.Random.Range(0, 10) != 0 && !PlayerMoveController.isDead && !DogController.isActive) {
+            if (UnityEngine.Random.Range(0, 10) != 0 && !PlayerMoveController.isDead && !DogController.isActive && _canStartHideEvent) {
                 if(!HideItem.hideItemActive) {
                     var isHideStart = labirinthPiece.TryToStartHideEvent();
                     Debug.Log($"hide event result: {isHideStart}");

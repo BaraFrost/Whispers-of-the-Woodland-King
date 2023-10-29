@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game {
 
@@ -37,6 +39,37 @@ namespace Game {
         [SerializeField]
         private float _runPitch;
 
+        [SerializeField]
+        private Slider _staminaSlider;
+
+        [SerializeField]
+        private float _timeToReduceStaminaBeforRunAgain;
+
+        [SerializeField]
+        private float _maxStamina;
+
+        [SerializeField]
+        private float _staminaDecriseSpeed;
+
+        [SerializeField]
+        private float _staminaIncreaseSpeed;
+
+        [SerializeField]
+        private float _reloadTime;
+
+        [SerializeField]
+        private int _ammoCount;
+
+        [SerializeField]
+        private Image _ammoImage;
+
+        [SerializeField]
+        private TextMeshProUGUI _text;
+
+        private float _currentReloadTime;
+
+        private float _currentStamina;
+
         public static bool isDead;
 
         private Vector3 _mouseWorldPosition = new Vector3();
@@ -45,12 +78,17 @@ namespace Game {
 
         private float Speed {
             get {
-                if (Input.GetKey(KeyCode.LeftShift)) {
+                if (_isRuning) {
                     return _runSpeed;
                 }
                 return _speed;
             }
         }
+
+        private float _timeBeforReduceStamina;
+
+        private bool _canRun => _currentStamina >= 0 && _timeBeforReduceStamina <= 0;
+        private bool _isRuning => _canRun && Input.GetKey(KeyCode.LeftShift);
 
         private Rigidbody _rigidbody;
         private Camera _camera;
@@ -58,6 +96,8 @@ namespace Game {
         private void Start() {
             _rigidbody = GetComponent<Rigidbody>();
             _camera = Camera.main;
+            _currentStamina = _maxStamina;
+            _currentReloadTime = _reloadTime;
         }
 
         private void Update() {
@@ -68,10 +108,49 @@ namespace Game {
                 Shoot();
             }
             HandleMoveVector();
+            UpdateStamina();
+            UpdateAmmo();
         }
 
+        private void UpdateAmmo() {
+            _ammoImage.fillAmount = _currentReloadTime / _reloadTime;
+            if (_currentReloadTime < _reloadTime) {
+                _currentReloadTime += Time.deltaTime;
+                if (_currentReloadTime > _reloadTime) {
+                    _currentReloadTime = _reloadTime;
+                }
+            }
+            _text.text = _ammoCount.ToString();
+        }
+
+        private void UpdateStamina() {
+            _staminaSlider.value = _currentStamina / _maxStamina;
+            if (_isRuning) {
+                _currentStamina -= Time.deltaTime * _staminaDecriseSpeed;
+                if(_currentStamina <= 0) {
+                    _timeBeforReduceStamina = _timeToReduceStaminaBeforRunAgain;
+                }
+            }
+            if (_timeBeforReduceStamina > 0) {
+                _timeBeforReduceStamina -= Time.deltaTime;
+            }
+            if (!_isRuning && _currentStamina < _maxStamina) {
+                _currentStamina += Time.deltaTime * _staminaIncreaseSpeed;
+                if (_currentStamina > _maxStamina) {
+                    _currentStamina = _maxStamina;
+                }
+            }
+        }
+
+
+
         private void Shoot() {
+            if (_currentReloadTime < _reloadTime || _ammoCount <= 0) {
+                return;
+            }
+            _ammoCount--;
             Instantiate(_bullet, _shootPoint.transform.position, Quaternion.LookRotation(_shootPoint.transform.forward, Vector3.up));
+            _currentReloadTime = 0;
         }
 
         public void Rotate() {
@@ -102,7 +181,7 @@ namespace Game {
                 if (!_stepAudioSource.isPlaying) {
                     _stepAudioSource.Play();
                 }
-                if (Input.GetKey(KeyCode.LeftShift)) {
+                if (_isRuning) {
                     _playerAnimator.ResetTrigger("Stay");
                     _playerAnimator.ResetTrigger("Go");
                     _playerAnimator.SetTrigger("Run");
@@ -124,7 +203,7 @@ namespace Game {
         }
 
         public void SetDamage() {
-            if(isDead) {
+            if (isDead) {
                 return;
             }
             isDead = true;
