@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018bd6299928c634f8c44f9003ea7089, type: 3}
   m_Name: HideSettings
   m_EditorClassIdentifier: 
-  hideDistance: 10
-  timeBeforeAttack: 5
-  _heartAudio: {fileID: 8300000, guid: b243ff4ff1bf01642bee4f23bc59f8a3, type: 3}
+  hideDistance: 15
+  timeBeforeAttack: 7
+  _heartAudio: {fileID: 8300000, guid: 1655b776ccd858a4ea494f98b7b571d3, type: 3}
   leshiy: {fileID: 807669593, guid: 89905a87648fa6e44be5390bc069f7b9, type: 3}

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Game {
@@ -22,6 +21,9 @@ namespace Game {
 
         [SerializeField]
         private Transform _shootPoint;
+
+        [SerializeField]
+        private Animator _playerAnimator;
 
         private bool _isDead;
 
@@ -79,11 +81,27 @@ namespace Game {
                 return;
             }
             _rigidbody.velocity = _moveDirection;
+            if (_moveDirection != Vector3.zero) {
+                if (Input.GetKey(KeyCode.LeftShift)) {
+                    _playerAnimator.ResetTrigger("Stay");
+                    _playerAnimator.ResetTrigger("Go");
+                    _playerAnimator.SetTrigger("Run");
+                } else {
+                    _playerAnimator.ResetTrigger("Stay");
+                    _playerAnimator.ResetTrigger("Run");
+                    _playerAnimator.SetTrigger("Go");
+                }
+            } else {
+                _playerAnimator.ResetTrigger("Go");
+                _playerAnimator.ResetTrigger("Run");
+                _playerAnimator.SetTrigger("Stay");
+            }
             Rotate();
         }
 
         public void SetDamage() {
             _isDead = true;
+            _playerAnimator.SetTrigger("Die");
         }
     }
 }
