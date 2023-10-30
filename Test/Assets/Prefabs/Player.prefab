@@ -471,15 +471,16 @@ MonoBehaviour:
   _staminaSlider: {fileID: 0}
   _timeToReduceStaminaBeforRunAgain: 1
   _maxStamina: 100
-  _staminaDecriseSpeed: 15
+  _staminaDecriseSpeed: 14
   _staminaIncreaseSpeed: 10
-  _reloadTime: 5
+  _reloadTime: 2.7
   _ammoCount: 13
   _ammoImage: {fileID: 0}
   _text: {fileID: 0}
   _shootParticleSystem: {fileID: 144918115}
   _reloadAudio: {fileID: 7006638730483721321}
   _shootAudio: {fileID: 7158892081630331251}
+  _startScene: 0
 --- !u!136 &1738530665669975245
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -609,7 +610,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2a08a5fd1cfc925409c92b56a5d3d005, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.19
   m_Pitch: 1
   Loop: 0

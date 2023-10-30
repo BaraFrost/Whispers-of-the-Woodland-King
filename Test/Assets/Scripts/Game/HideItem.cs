@@ -32,7 +32,6 @@ namespace Game {
 
         private void Awake() {
             _audioSource = GetComponent<AudioSource>();
-            Activate(FindObjectOfType<PlayerMoveController>());
         }
 
         public void Activate(PlayerMoveController player) {
@@ -73,18 +72,32 @@ namespace Game {
             return Vector3.Distance(_player.gameObject.transform.position, gameObject.transform.position) <= _hideSettings.hideDistance;
         }
 
+        public void SetDamage() {
+            if(!_isActive) {
+                return;
+            }
+            Instantiate(_hideSettings.hideItemeDestroyEffect, gameObject.transform.position, Quaternion.identity);
+            var leshyHealth = FindObjectOfType<LeshyHealth>();
+            leshyHealth.DecreaseLeshiyHelth();
+            Deactivate();
+        }
+
         public void Deactivate() {
-            if(_signInstance != null) {
+            if (_signInstance != null) {
                 Destroy(_signInstance);
             }
             if (_attackCoroutine != null) {
                 StopCoroutine(_attackCoroutine);
             }
-            if(_audioSource != null) {
+            if (_audioSource != null) {
                 _audioSource.Stop();
             }
             _isActive = false;
             hideItemActive = false;
+        }
+
+        private void OnDestroy() {
+            _isActive = false;
         }
 
         private void OnDisable() {

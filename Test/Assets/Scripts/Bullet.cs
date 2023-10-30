@@ -23,9 +23,7 @@ namespace Game {
 
         private void OnTriggerEnter(Collider other) {
             if(other.TryGetComponent<HideItem>(out var hideItem)) {
-                hideItem.Deactivate();
-                var leshyHealth = FindObjectOfType<LeshyHealth>();
-                leshyHealth.DecreaseLeshiyHelth();
+                hideItem.SetDamage();
             }
         }
     }

@@ -46,11 +46,23 @@ namespace Game {
 
         public static bool isActive;
 
+        [SerializeField]
+        public DestroyableEffect _damageEffect;
+        [SerializeField]
+        public DestroyableEffect _destoyEffect;
+
+
         private void Start() {
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
-            Destroy(gameObject, _lifeTime);
+            StartCoroutine(LifeTimeCoroutnie());
           //  Init(FindObjectOfType<PlayerMoveController>());
+        }
+
+        private IEnumerator LifeTimeCoroutnie() {
+            yield return new WaitForSeconds(_lifeTime);
+            Destroy(gameObject);
+            Instantiate(_destoyEffect, gameObject.transform.position, Quaternion.identity);
         }
 
         public void Init(PlayerMoveController player) {
@@ -98,7 +110,11 @@ namespace Game {
             if (other.TryGetComponent<Bullet>(out var bullet)) {
                 _lifeCount--;
                 if (_lifeCount <= 0) {
+                    Instantiate(_destoyEffect, gameObject.transform.position, Quaternion.identity);
                     Destroy(gameObject);
+                }
+                else {
+                    Instantiate(_damageEffect, gameObject.transform.position, Quaternion.identity);
                 }
             }
         }

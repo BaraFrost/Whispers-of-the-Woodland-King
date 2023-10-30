@@ -11,6 +11,8 @@ namespace Game {
         public AudioClip _heartAudio;
 
         public LeshiyController leshiy;
+
+        public DestroyableEffect hideItemeDestroyEffect;
     }
 }
 

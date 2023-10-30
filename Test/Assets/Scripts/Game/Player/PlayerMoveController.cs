@@ -1,4 +1,5 @@
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -75,6 +76,9 @@ namespace Game {
         [SerializeField]
         private AudioSource _shootAudio;
 
+        [SerializeField]
+        private bool _startScene;
+
         private float _currentReloadTime;
 
         private float _currentStamina;
@@ -96,7 +100,7 @@ namespace Game {
 
         private float _timeBeforReduceStamina;
 
-        private bool _canRun => _currentStamina >= 0 && _timeBeforReduceStamina <= 0;
+        private bool _canRun => _currentStamina >= 0 && _timeBeforReduceStamina <= 0 && !_startScene;
         private bool _isRuning => _canRun && Input.GetKey(KeyCode.LeftShift);
 
         private Rigidbody _rigidbody;
@@ -107,10 +111,11 @@ namespace Game {
             _camera = Camera.main;
             _currentStamina = _maxStamina;
             _currentReloadTime = _reloadTime;
+            isDead = false;
         }
 
         private void Update() {
-            if (isDead) {
+            if (isDead || PauseLogic.isPaused) {
                 return;
             }
             if (Input.GetMouseButtonDown(0)) {
@@ -122,6 +127,9 @@ namespace Game {
         }
 
         private void UpdateAmmo() {
+            if(_startScene) {
+                return;
+            }
             _ammoImage.fillAmount = _currentReloadTime / _reloadTime;
             if (_currentReloadTime < _reloadTime) {
                 _currentReloadTime += Time.deltaTime;
@@ -134,6 +142,9 @@ namespace Game {
         }
 
         private void UpdateStamina() {
+            if(_startScene) {
+                return;
+            }
             _staminaSlider.value = _currentStamina / _maxStamina;
             if (_isRuning) {
                 _currentStamina -= Time.deltaTime * _staminaDecriseSpeed;
@@ -155,7 +166,7 @@ namespace Game {
 
 
         private void Shoot() {
-            if (_currentReloadTime < _reloadTime || _ammoCount <= 0) {
+            if (_currentReloadTime < _reloadTime || _ammoCount <= 0 || _startScene) {
                 return;
             }
             _ammoCount--;
@@ -180,7 +191,7 @@ namespace Game {
         }
 
         private void FixedUpdate() {
-            if (isDead) {
+            if (isDead || PauseLogic.isPaused) {
                 return;
             }
             _rigidbody.velocity = _moveDirection;

@@ -88,7 +88,7 @@ namespace Game {
                     piece.connectedPieces[oppoziteSide] = labirinthPiece;
                 }
             }
-            if (UnityEngine.Random.Range(0, 10) != 0 && !PlayerMoveController.isDead && !DogController.isActive && _canStartHideEvent && !LeshyHealth.isDead) {
+            if (UnityEngine.Random.Range(0, 5) != 0 && !PlayerMoveController.isDead && !DogController.isActive && _canStartHideEvent && !LeshyHealth.isDead) {
                 if(!HideItem.hideItemActive) {
                     var isHideStart = labirinthPiece.TryToStartHideEvent();
                     Debug.Log($"hide event result: {isHideStart}");
@@ -101,7 +101,7 @@ namespace Game {
         }
 
         private System.Collections.IEnumerator DelaydDogSpawn() {
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(15);
             if(!DogController.isActive && !LeshyHealth.isDead && !PlayerMoveController.isDead) {
                 _currentPiece.TryToStartDogEvent();
             }

@@ -16,3 +16,4 @@ MonoBehaviour:
   timeBeforeAttack: 10
   _heartAudio: {fileID: 8300000, guid: 9335082a724feef43888d13287e755d5, type: 3}
   leshiy: {fileID: 807669593, guid: 89905a87648fa6e44be5390bc069f7b9, type: 3}
+  hideItemeDestroyEffect: {fileID: 5653367011394361012, guid: 493a928051b0388419f61554ac0d194b, type: 3}

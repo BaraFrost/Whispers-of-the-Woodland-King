@@ -8,6 +8,9 @@ public class LeshyHealth : MonoBehaviour
     public int LeshiyHealth => _leshiyHealth;
     public Action _onHealtChanged;
 
+    [SerializeField]
+    private AudioSource _audioSource;
+
     public static bool isDead;
 
     private void Awake() {
@@ -22,6 +25,7 @@ public class LeshyHealth : MonoBehaviour
         _onHealtChanged?.Invoke();
         if(_leshiyHealth <= 0) {
             isDead = true;
+            _audioSource.Play();
         }
     }
 }

@@ -845,13 +845,15 @@ MonoBehaviour:
   _startAudio: {fileID: 1741076309308274682}
   _wovAudio: {fileID: 1741076309308274681}
   _attackAudio: {fileID: 8547996719024372943}
-  _speed: 5
+  _speed: 4.8
   _lifeTime: 20
   _delayBeforeAttack: 4
   _distanceToAttack: 3
   _lifeCount: 2
   _jumpTime: 2
   _jumpForce: 300
+  _damageEffect: {fileID: 1877290737868008323, guid: b532220f455019045a03a62ffcf1e22d, type: 3}
+  _destoyEffect: {fileID: 1877290737868008323, guid: 1643172416877eb45b0e459fd4762bd7, type: 3}
 --- !u!82 &8547996719024372943
 AudioSource:
   m_ObjectHideFlags: 0
