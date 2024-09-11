@@ -2,6 +2,7 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Game {
 
@@ -79,6 +80,9 @@ namespace Game {
         [SerializeField]
         private bool _startScene;
 
+        [SerializeField]
+        private float _sensivity;
+
         private float _currentReloadTime;
 
         private float _currentStamina;
@@ -112,6 +116,8 @@ namespace Game {
             _currentStamina = _maxStamina;
             _currentReloadTime = _reloadTime;
             isDead = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Update() {
@@ -177,17 +183,22 @@ namespace Game {
         }
 
         public void Rotate() {
-            if (!Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hitInfo, 100f, _groundLayerMask.value)) {
-                return;
-            }
-            _mouseWorldPosition = Vector3.Lerp(_mouseWorldPosition, new Vector3(hitInfo.point.x, gameObject.transform.position.y, hitInfo.point.z), Time.deltaTime * _rotationSmooth);
-            gameObject.transform.LookAt(_mouseWorldPosition, Vector3.up);
+            /*    if (!Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hitInfo, 100f, _groundLayerMask.value)) {
+                    return;
+                }
+                _mouseWorldPosition = Vector3.Lerp(_mouseWorldPosition, new Vector3(hitInfo.point.x, gameObject.transform.position.y, hitInfo.point.z), Time.deltaTime * _rotationSmooth);
+                gameObject.transform.LookAt(_mouseWorldPosition, Vector3.up);*/
+            var horizontal = -Input.GetAxis("Mouse Y") * _sensivity * Time.deltaTime;
+            var vertical = Input.GetAxis("Mouse X") * _sensivity * Time.deltaTime;
+
+            gameObject.transform.Rotate(0, vertical, 0);
+            _camera.transform.Rotate(horizontal, 0, 0);
         }
 
         private void HandleMoveVector() {
             var moveVectorX = Input.GetAxis("Horizontal");
             var moveVectorZ = Input.GetAxis("Vertical");
-            _moveDirection = new Vector3(moveVectorX, 0, moveVectorZ) * Speed;
+            _moveDirection = (gameObject.transform.right * moveVectorX + gameObject.transform.forward * moveVectorZ) * Speed;
         }
 
         private void FixedUpdate() {

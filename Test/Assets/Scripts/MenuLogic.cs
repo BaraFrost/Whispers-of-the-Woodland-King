@@ -30,8 +30,8 @@ namespace UI {
         }
 
         private void OpenStartGameScene() {
-            GameSceneManager.instance.LoadStartGameScene();
             _gameData.isFirstGame = false;
+            GameSceneManager.instance.LoadStartGameScene();
         }
 
         private void Continue() {

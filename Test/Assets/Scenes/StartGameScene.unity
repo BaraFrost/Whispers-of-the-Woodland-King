@@ -683,6 +683,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseLogic
       objectReference: {fileID: 0}
+    - target: {fileID: 8384054722813938383, guid: 9f28b7c48730a7d41a56cf75f9e3910f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f28b7c48730a7d41a56cf75f9e3910f, type: 3}
 --- !u!224 &278933053 stripped
@@ -1101,7 +1105,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.319
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
